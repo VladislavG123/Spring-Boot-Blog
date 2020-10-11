@@ -1,7 +1,10 @@
 package itstep.blog.controllers;
 
+import itstep.blog.data.AuthorsRepository;
 import itstep.blog.data.DataContext;
 import itstep.blog.data.PostDto;
+import itstep.blog.data.PostsRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +17,13 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class AdminController {
 
+    @Autowired
+    private PostsRepository postsRepository;
+
+    @Autowired
+    private AuthorsRepository authorsRepository;
+
+
     @GetMapping("/admin/login")
     public String login() {
         return "/admin/login";
@@ -21,7 +31,7 @@ public class AdminController {
 
     @PostMapping("/admin/login")
     public String loginHandler(HttpServletResponse response, String name, String password) {
-        var author = DataContext.authorizeAuthorOrNull(name, password);
+        var author = DataContext.authorizeAuthorOrNull(authorsRepository, name, password);
 
         if(author == null) {
             return "/admin/login";
@@ -69,7 +79,7 @@ public class AdminController {
             return "/admin/login";
         }
 
-        DataContext.createPost(new PostDto(title, details, authorId));
+        DataContext.createPost(postsRepository, new PostDto(title, details, authorId));
 
         model.addAttribute("pushes", "Пост создан успешно!");
 
