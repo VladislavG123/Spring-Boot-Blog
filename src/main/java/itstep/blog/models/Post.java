@@ -1,11 +1,19 @@
 package itstep.blog.models;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
 public class Post {
+    @Id
+    @GeneratedValue
     private int id;
+
     private String title;
     private String details;
 
-    private Author author;
+    private int authorId;
 
     public int getId() {
         return id;
@@ -31,21 +39,21 @@ public class Post {
         this.details = details;
     }
 
-    public Author getAuthor() {
-        return author;
+    public int getAuthorId() {
+        return authorId;
     }
 
-    public void setAuthor(Author author) {
-        this.author = author;
+    public void setAuthorId(int authorId) {
+        this.authorId = authorId;
     }
 
     public Post() {
     }
 
-    public Post(int id, String title, String details, Author author) {
+    public Post(int id, String title, String details, int authorId) {
         this.id = id;
         this.title = title;
         this.details = details;
-        this.author = author;
+        this.authorId = authorId;
     }
 }
